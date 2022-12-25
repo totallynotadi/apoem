@@ -26,10 +26,6 @@
 	let sectionContainer;
 	let currentPixel = 0;
 
-	const scrollCallback = (e) => {
-		console.log(e, e.target.scrollTopMax - e.target.scrollTop);
-	};
-
 	const calculateScale = (index) => {
 		let intendedPixel = index * 80;
 		let difference = intendedPixel - currentPixel - (sectionContainer.clientHeight % 8);
@@ -39,6 +35,23 @@
 		// let scale = 1 - Math.min(Math.abs(difference) / 1000, 0.3);
 
 		return scale;
+	};
+
+	const scrollCallback = (e) => {
+		currentPixel = sectionContainer.scrollTop;
+		let lineElements = Array.from(document.getElementsByClassName('line'));
+		for (let [idx, line] of lineElements.entries()) {
+			let scale = calculateScale(idx);
+			// console.log(line, idx, scale);
+			let transformScale = scale > 0.8 ? 1 : 0.8;
+
+			line.style.transform = `scale(${transformScale})`;
+
+			// line.style.marginTop = transformScale > 0.8 ? '-2rem' : '0rem';
+			line.style.marginBottom = transformScale > 0.8 ? '1rem' : '0rem';
+
+			line.style.filter = transformScale > 0.8 ? `blur(0px)` : `blur(${scale + 2}px)`;
+		}
 	};
 
 	// $: currentPixel = linesContainer.scrollTop;
@@ -52,32 +65,20 @@
 		linesContainer.style.padding = `0 0 ${sectionPadding}px 0`;
 		// console.log(lineElements.at(-1).clientHeight);
 
-		sectionContainer.addEventListener('scroll', (e) => {
-			currentPixel = sectionContainer.scrollTop;
-			for (let [idx, line] of lineElements.entries()) {
-				let scale = calculateScale(idx);
-				// console.log(line, idx, scale);
-				let transformScale = scale > 0.8 ? 1 : 0.8;
+		sectionContainer.addEventListener('scroll', scrollCallback, false);
+		sectionContainer.addEventListener('touchmove', scrollCallback, false);
+		sectionContainer.addEventListener('pointermove', scrollCallback, false);
 
-				line.style.transform = `scale(${transformScale})`;
-
-				// line.style.marginTop = transformScale > 0.8 ? '-2rem' : '0rem';
-				line.style.marginBottom = transformScale > 0.8 ? '1rem' : '0rem';
-
-				line.style.filter = transformScale > 0.8 ? `blur(0px)` : `blur(${scale + 2}px)`;
-			}
-		});
-
-		let topMask = document.getElementById('blur-mask-top');
-		let bottomMask = document.getElementById('blur-mask-bottom');
+		// let topMask = document.getElementById('blur-mask-top');
+		// let bottomMask = document.getElementById('blur-mask-bottom');
 
 		// topMask.style.WebkitMaskImage = 'linear-gradient(to top, black 97%, transparent);';
 		// topMask.style.maskImage = 'linear-gradient(to top, black 97%, transparent);';
-		topMask.style.height = `${sectionContainer.clientHeight}px`;
+		// topMask.style.height = `${sectionContainer.clientHeight}px`;
 
 		// bottomMask.style.maskImage = 'linear-gradient(to bottom, black 97%, transparent);';
 		// bottomMask.style.WebkitMaskImage = 'linear-gradient(to bottom, black 97%, transparent);';
-		bottomMask.style.height = `${sectionContainer.clientHeight}px`;
+		// bottomMask.style.height = `${sectionContainer.clientHeight}px`;
 	});
 </script>
 
@@ -104,8 +105,9 @@
 	section {
 		height: 100%;
 		overflow: scroll;
-		-webkit-mask-image: linear-gradient(to top, black 90%, transparent);
-		mask-image: linear-gradient(to top, rgb(0, 0, 0) 90%, transparent);
+		-webkit-mask-image: linear-gradient(to bottom, black 90%, transparent);
+		mask-image: linear-gradient(to bottom, rgb(0, 0, 0) 90%, transparent);
+		margin-top: 2rem;
 	}
 
 	.lines {
@@ -124,10 +126,12 @@
 	/* iPhone */
 	@media (max-width: 700px) or (max-height: 400px) {
 		section {
+			margin-top: 2rem;
+
 			height: 100%;
 			overflow: scroll;
-			-webkit-mask-image: linear-gradient(to top, black 90%, gray);
-			mask-image: linear-gradient(to top, rgb(0, 0, 0) 90%, gray);
+			-webkit-mask-image: linear-gradient(to bottom, black 90%, gray);
+			mask-image: linear-gradient(to bottom, rgb(0, 0, 0) 90%, gray);
 		}
 
 		.line {
@@ -144,8 +148,7 @@
 			height: min-content;
 		}
 	}
-	#blur-mask-top,
-	#blur-mask-bottom {
+	#blur-mask-top {
 		-webkit-mask-image: linear-gradient(to top, black 90%, gray);
 		mask-image: linear-gradient(to top, rgb(0, 0, 0) 90%, gray);
 		pointer-events: none;
@@ -153,5 +156,6 @@
 	#blur-mask-bottom {
 		-webkit-mask-image: linear-gradient(to bottom, black 97%, gray);
 		mask-image: linear-gradient(to bottom, rgb(0, 0, 0) 97%, gray);
+		pointer-events: none;
 	}
 </style>
