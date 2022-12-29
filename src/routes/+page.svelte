@@ -4,7 +4,7 @@
 	const lines = [
 		'Deep inside my heart was everything shattered,',
 		'I realised, it was just a break, that mattered!',
-		'on my way upto a library at the palm street',
+		'On my way upto a library at the palm street',
 		'I looked forward to just read and repeat!',
 		'Staring at the books, I retrieved my lost connections,',
 		'Oh, my heart was filled with ineffable emotions',
@@ -17,9 +17,9 @@
 		"I wondered at the end, 'Why Sidney Carton had to die?'",
 		'I could do nothing at that moment, but just whine and cry',
 		'The book ended',
-		'it was not as easy as it seemed to be',
+		'It was not as easy as it seemed to be',
 		'Coming back to reality',
-		'that day, was not my cup of tea'
+		'That day, was not my cup of tea'
 	];
 
 	let linesContainer;
@@ -30,21 +30,18 @@
 	let intendedPixel;
 
 	let currentLine = null;
+	let currentLineOffset = 0;
 	let currentPixel = 0;
 
 	const calculateScale = (index, line) => {
 		lineBounds = line.getBoundingClientRect();
 		// console.log(line, lineBounds);
 
-		// intendedPixel = index * 88;
-		// intendedPixel = 104;
-		// intendedPixel = lineElements.at(0).getBoundingClientRect().top;
-
 		currentPixel = lineBounds.top;
 
 		let difference = intendedPixel - currentPixel;
 
-		let scale = 1 - Math.min(Math.abs(difference) / 150, 0.2);
+		let scale = 1 - Math.min(Math.abs(difference) / 150, 0.1);
 		// let scale = 1 - Math.min(Math.abs(difference) / 10, 0.2);
 
 		// if (scale > 0.8) {
@@ -61,18 +58,22 @@
 		for (let [idx, line] of lineElements.entries()) {
 			let scale = calculateScale(idx, line);
 
-			// currentLine = scale > 0.8 ? line : null;
-
-			let transformScale = scale > 0.8 ? 1 : 0.8;
+			let transformScale = scale > 0.9 ? 1 : 0.9;
 
 			line.style.transform = `scale(${transformScale})`;
 
-			line.style.marginBottom = transformScale > 0.8 ? '1rem' : '0rem';
+			line.style.marginBottom = transformScale > 0.9 ? '0.8rem' : '0rem';
+			line.style.marginLeft = transformScale > 0.9 ? '-0.1rem' : '0rem';
 
-			line.style.filter = transformScale > 0.8 ? `blur(0px)` : `blur(${scale + 2}px)`;
+			line.style.filter =
+				transformScale > 0.9 ? `blur(0px)` : `blur(${Math.abs(idx - currentLineOffset + 0.9)}px)`;
 
-			if (scale > 0.8) {
+			if (scale > 0.9) {
+				// line.style.filter = line.style.filter + `drop-shadow(rgb(191, 222, 255) 0px 0px 4px)`;
+				// line.style.filter = line.style.filter + `drop-shadow(#dff5ff 0px 0px 4px)`;
+
 				currentLine = line;
+				currentLineOffset = idx;
 			}
 		}
 	};
@@ -150,13 +151,19 @@
 	.line {
 		padding: 1.6rem 1rem;
 		color: #2a2e2f;
+		color: #eeddc3;
+		color: #2f2f2f;
 		font-weight: 700;
-		font-size: 2.4rem;
+		/* font-weight: 700; */
+		font-size: 2.2rem;
 		transform-origin: 0% 0%;
 		user-select: none;
 	}
 
 	@media (max-width: 700px) or (max-height: 400px) {
+		* {
+			transition: all 0.2s ease-in-out;
+		}
 		section {
 			padding-top: 2rem;
 			height: 100%;
@@ -168,6 +175,8 @@
 		.line {
 			padding: 0.9rem;
 			color: #2a2e2f;
+			/* color: #3d3d3d; */
+
 			font-weight: 700;
 			font-size: 1.2rem;
 			transform-origin: 0% 0%;
@@ -178,7 +187,7 @@
 		}
 	}
 	.blur-mask-top {
-		-webkit-mask-image: linear-gradient(to top, black 94%, transparent);
-		mask-image: linear-gradient(to top, rgb(0, 0, 0) 94%, transparent);
+		-webkit-mask-image: linear-gradient(to top, black 91%, transparent);
+		mask-image: linear-gradient(to top, rgb(0, 0, 0) 91%, transparent);
 	}
 </style>
