@@ -62,7 +62,7 @@
 
 			line.style.transform = `scale(${transformScale})`;
 
-			line.style.marginBottom = transformScale > 0.9 ? '0.8rem' : '0rem';
+			// line.style.marginBottom = transformScale > 0.9 ? '0.8rem' : '0rem';
 			line.style.marginLeft = transformScale > 0.9 ? '-0.1rem' : '0rem';
 
 			line.style.filter =
@@ -150,11 +150,10 @@
 
 	.line {
 		padding: 1.6rem 1rem;
-		color: #2a2e2f;
-		color: #eeddc3;
+		/* color: #2a2e2f; */
+		/* color: #eeddc3; */
 		color: #2f2f2f;
 		font-weight: 700;
-		/* font-weight: 700; */
 		font-size: 2.2rem;
 		transform-origin: 0% 0%;
 		user-select: none;
@@ -174,9 +173,9 @@
 
 		.line {
 			padding: 0.9rem;
-			color: #2a2e2f;
+			/* color: #2a2e2f; */
 			/* color: #3d3d3d; */
-
+			color: #2f2f2f;
 			font-weight: 700;
 			font-size: 1.2rem;
 			transform-origin: 0% 0%;
