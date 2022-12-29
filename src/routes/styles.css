@@ -21,8 +21,8 @@
 
 * {
 	box-sizing: border-box;
-	transition: all 0.19s ease-in-out;
 	scroll-behavior: smooth;
+	transition: all 0.3s ease-in-out;
 	font-family: 'Inter', sans-serif;
 }
 
