@@ -54,7 +54,7 @@
 	const scrollCallback = (e) => {
 		let lineElements = Array.from(document.getElementsByClassName('line'));
 
-		currentPixel = sectionContainer.scrollTop;
+		// currentPixel = sectionContainer.scrollTop;
 		for (let [idx, line] of lineElements.entries()) {
 			let scale = calculateScale(idx, line);
 
@@ -66,7 +66,9 @@
 			line.style.marginLeft = transformScale > 0.9 ? '-0.1rem' : '0rem';
 
 			line.style.filter =
-				transformScale > 0.9 ? `blur(0px)` : `blur(${Math.abs(idx - currentLineOffset + 0.9)}px)`;
+				transformScale > 0.9 ? `blur(0px)` : `blur(${Math.abs(idx - currentLineOffset) + 0.9}px)`;
+
+			line.style.marginTop = transformScale > 0.9 ? '-0.2rem' : '0rem';
 
 			if (scale > 0.9) {
 				// line.style.filter = line.style.filter + `drop-shadow(rgb(191, 222, 255) 0px 0px 4px)`;
@@ -87,9 +89,10 @@
 			true
 		);
 		let lineElements = Array.from(document.getElementsByClassName('line'));
-		intendedPixel = lineElements.at(0).getBoundingClientRect().top;
-		let fullPadding = sectionContainer.clientHeight;
 
+		intendedPixel = lineElements.at(0).getBoundingClientRect().top;
+
+		let fullPadding = sectionContainer.clientHeight;
 		let sectionPadding = fullPadding - lineElements.at(-1).clientHeight;
 
 		scrollCallback();
@@ -122,6 +125,7 @@
 	<meta name="description" content="it's nice innit?" />
 </svelte:head>
 
+<!-- <div id="intended-marker" style="--intendedPixel:{intendedPixel}px" /> -->
 <div class="stack fluid blur-mask-top" on:mousedown={onTapCallback}>
 	<section bind:this={sectionContainer} class="stack-item">
 		<div class="lines fluid-column" id="lines" bind:this={linesContainer}>
@@ -135,12 +139,21 @@
 </div>
 
 <style>
+	/* #intended-marker {
+		position: absolute;
+		left: 1rem;
+		top: var(--intendedPixel);
+		width: 80vw;
+		height: 2px;
+		background-color: black;
+		border-radius: 4rem;
+	} */
 	section {
 		height: 100%;
 		overflow: hidden;
 		-webkit-mask-image: linear-gradient(to bottom, black 90%, transparent);
 		mask-image: linear-gradient(to bottom, rgb(0, 0, 0) 90%, transparent);
-		padding-top: 2rem;
+		padding-top: 7rem;
 	}
 
 	.lines {
@@ -149,7 +162,7 @@
 	}
 
 	.line {
-		padding: 1.6rem 1rem;
+		padding: 1.7rem 1rem 1.7rem 1rem;
 		/* color: #2a2e2f; */
 		/* color: #eeddc3; */
 		color: #2f2f2f;
@@ -161,7 +174,8 @@
 
 	@media (max-width: 700px) or (max-height: 400px) {
 		* {
-			transition: all 0.2s ease-in-out;
+			transition: all 0.4s ease-in-out;
+			scroll-behavior: smooth;
 		}
 		section {
 			padding-top: 2rem;
@@ -169,6 +183,7 @@
 			overflow: hidden;
 			-webkit-mask-image: linear-gradient(to bottom, black 90%, gray);
 			mask-image: linear-gradient(to bottom, rgb(0, 0, 0) 90%, gray);
+			padding-top: 7rem;
 		}
 
 		.line {
