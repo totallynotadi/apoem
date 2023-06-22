@@ -88,7 +88,7 @@
 			},
 			true
 		);
-		let lineElements = Array.from(document.getElementsByClassName('line'));
+		const lineElements = Array.from(document.getElementsByClassName('line'));
 
 		intendedPixel = lineElements.at(0).getBoundingClientRect().top;
 
@@ -139,7 +139,7 @@
 </div>
 
 <style>
-	/* #intended-marker {
+	#intended-marker {
 		position: absolute;
 		left: 1rem;
 		top: var(--intendedPixel);
@@ -147,7 +147,7 @@
 		height: 2px;
 		background-color: black;
 		border-radius: 4rem;
-	} */
+	}
 	section {
 		height: 100%;
 		overflow: hidden;
@@ -166,6 +166,7 @@
 		/* color: #2a2e2f; */
 		/* color: #eeddc3; */
 		color: #2f2f2f;
+		/* color: #eeddc3; */
 		font-weight: 700;
 		font-size: 2.2rem;
 		transform-origin: 0% 0%;
@@ -191,6 +192,7 @@
 			/* color: #2a2e2f; */
 			/* color: #3d3d3d; */
 			color: #2f2f2f;
+			/* color: #eeddc3; */
 			font-weight: 700;
 			font-size: 1.2rem;
 			transform-origin: 0% 0%;
